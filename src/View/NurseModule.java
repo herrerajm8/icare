@@ -1,0 +1,579 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package View;
+
+import Controller.MainControl;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import Model.Medz;
+import Model.User;
+import hms2.Sng_Back;
+import java.sql.PreparedStatement;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+/**
+ *
+ * @author Leo James
+ */
+public class NurseModule extends javax.swing.JFrame {
+    addPatient adpat = new addPatient();
+    widrawMeds wmeds = new widrawMeds();
+    private ArrayList<Integer> mID = new ArrayList<>();
+    /**
+     * Creates new form NurseModule
+     */
+    public NurseModule() {
+        initComponents();
+        show_user3();
+        show_user4();
+    }
+    
+    public void close1(){
+        WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
+        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
+    }
+    
+    public ArrayList<User> userList3(){
+        ArrayList<User> userList3 = new ArrayList<>();
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/icaredb?zeroDateTimeBehavior=exception","root","");
+            String query3="SELECT * FROM patientrec";
+            
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query3);
+            
+            User user;
+            while(rs.next()){
+                user=new User(rs.getInt("patientID"),rs.getInt("assignedDoctor"),rs.getString("patient_FirstName"),rs.getString("patient_LastName"),rs.getString("patient_MI"),rs.getString("diagnosis"),rs.getString("patient_Address"),rs.getInt("patient_Age"),rs.getString("gender"),rs.getInt("room_No"),rs.getDate("date_Admitted"));
+                userList3.add(user);
+            }
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "User Authenticity Error: " + e.getMessage());
+        }
+        return userList3;
+    }
+    
+    public ArrayList<Medz> medList(){
+        ArrayList<Medz> medList = new ArrayList<>();
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/icaredb?zeroDateTimeBehavior=exception","root","");
+            String query4="SELECT * FROM medicinelist";
+            
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query4);
+            
+            Medz meds;
+            while(rs.next()){
+                meds=new Medz(rs.getInt("medicine_id"),rs.getInt("amount"),rs.getInt("remaining"),rs.getString("medicine_name"),rs.getString("dosageForm"),rs.getString("medicine_desc"));
+                medList.add(meds);
+            }
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "User Authenticity Error: " + e.getMessage());
+        }
+        return medList;
+    }
+    
+    public void show_user4(){
+        ArrayList<Medz> list1 = medList();
+        DefaultTableModel model = (DefaultTableModel)medTable.getModel();
+        Object[] row = new Object[10];
+        
+        model.setRowCount(0);
+        for(int i=0; i<list1.size();i++){
+            row[0]=list1.get(i).getmedicine_name();
+            row[1]=list1.get(i).getdosageForm();
+            row[2]=list1.get(i).getamount();
+            row[3]=list1.get(i).getmedicine_desc();
+            row[4]=list1.get(i).getremaining();
+            mID.add(i, list1.get(i).getmedicine_id());
+            model.addRow(row);
+        }
+    }
+    public void show_user3(){
+        ArrayList<User> list = userList3();
+        DefaultTableModel model = (DefaultTableModel)jTablePatient.getModel();
+        Object[] row = new Object[10];
+        model.setRowCount(0);
+        for(int i=0; i<list.size();i++){
+            row[0]=list.get(i).getpatient_LastName();
+            row[1]=list.get(i).getpatient_FirstName();
+            row[2]=list.get(i).getpatient_MI();
+            row[3]=list.get(i).getdiagnosis();
+            row[4]=list.get(i).getpatient_Address();
+            row[5]=list.get(i).getpatient_Age();
+            row[6]=list.get(i).getgender();
+            row[7]=list.get(i).getroom_No();
+            row[8]=list.get(i).getdate_Admitted();
+            model.addRow(row);
+        }
+    }
+    
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jButtonAdd = new javax.swing.JButton();
+        jTabbedMeds = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTablePatient = new javax.swing.JTable();
+        medPane = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
+        dform1 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        mcount1 = new javax.swing.JTextField();
+        jButton7 = new javax.swing.JButton();
+        mamount1 = new javax.swing.JTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        mdesc1 = new javax.swing.JTextArea();
+        jButton8 = new javax.swing.JButton();
+        mname1 = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        medTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jPanel1.setLayout(null);
+
+        jButtonAdd.setText("Add Patient");
+        jButtonAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonAddMouseClicked(evt);
+            }
+        });
+        jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButtonAdd);
+        jButtonAdd.setBounds(350, 10, 90, 30);
+
+        jTablePatient.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Last Name", "First Name", "MI", "Diagnosis", "Address", "Age", "Gender", "Room", "Admitted"
+            }
+        ));
+        jScrollPane1.setViewportView(jTablePatient);
+        if (jTablePatient.getColumnModel().getColumnCount() > 0) {
+            jTablePatient.getColumnModel().getColumn(0).setPreferredWidth(70);
+            jTablePatient.getColumnModel().getColumn(1).setPreferredWidth(80);
+            jTablePatient.getColumnModel().getColumn(2).setPreferredWidth(40);
+            jTablePatient.getColumnModel().getColumn(3).setPreferredWidth(180);
+            jTablePatient.getColumnModel().getColumn(4).setPreferredWidth(100);
+            jTablePatient.getColumnModel().getColumn(5).setPreferredWidth(25);
+            jTablePatient.getColumnModel().getColumn(6).setPreferredWidth(40);
+            jTablePatient.getColumnModel().getColumn(7).setPreferredWidth(40);
+            jTablePatient.getColumnModel().getColumn(8).setPreferredWidth(150);
+        }
+
+        jTabbedMeds.addTab("Patients", jScrollPane1);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jButton5.setText("Delete");
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton5MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton5MouseEntered(evt);
+            }
+        });
+
+        jLabel7.setText("Amount");
+
+        jLabel8.setText("Remaining");
+
+        jButton6.setText("Add");
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton6MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton6MouseEntered(evt);
+            }
+        });
+
+        jLabel9.setText("Medice Name");
+
+        jLabel10.setText("Description");
+
+        jButton7.setText("Clear");
+        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton7MouseClicked(evt);
+            }
+        });
+
+        mdesc1.setColumns(20);
+        mdesc1.setRows(5);
+        jScrollPane6.setViewportView(mdesc1);
+
+        jButton8.setText("Update");
+        jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton8MouseClicked(evt);
+            }
+        });
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        mname1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mname1ActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Dosage Form");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mname1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dform1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mamount1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mcount1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(mname1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(dform1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(mamount1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(mcount1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton6)
+                    .addComponent(jButton8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        medTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Dosage Form", "Amount", "Description", "Remaining"
+            }
+        ));
+        medTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                medTableMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(medTable);
+
+        javax.swing.GroupLayout medPaneLayout = new javax.swing.GroupLayout(medPane);
+        medPane.setLayout(medPaneLayout);
+        medPaneLayout.setHorizontalGroup(
+            medPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(medPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        medPaneLayout.setVerticalGroup(
+            medPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(medPaneLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(medPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedMeds.addTab("Medicine", medPane);
+
+        jPanel1.add(jTabbedMeds);
+        jTabbedMeds.setBounds(10, 20, 800, 440);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javaapplication10/img/adminbg1.png"))); // NOI18N
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(0, 0, 810, 470);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAddActionPerformed
+
+    private void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
+        // TODO add your handling code here:
+        adpat.setVisible(true);
+    }//GEN-LAST:event_jButtonAddMouseClicked
+
+    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        // TODO add your handling code here:
+        int ii = medTable.getSelectedRow();
+        TableModel model =  medTable.getModel();
+        String mid = model.getValueAt(ii, 0).toString();
+        Connection conn = null;
+        ResultSet rs = null;
+        try{
+            String sql = "DELETE FROM `medicinelist` WHERE medicine_id=" +mid ;
+            Class.forName("com.mysql.jdbc.Driver");
+            conn=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/icaredb?zeroDateTimeBehavior=exception","root","");
+            PreparedStatement pst = (PreparedStatement) conn.prepareStatement(sql);
+
+            int i = pst.executeUpdate();
+            System.out.println("Deleted");
+            show_user4();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton5MouseClicked
+
+    private void jButton5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5MouseEntered
+
+    private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
+        // TODO add your handling code here:
+        try{
+            String mname = mname1.getText();
+            String mdosage = dform1.getText();
+            int mamount = Integer.parseInt(mamount1.getText());
+            String mdesc = mdesc1.getText();
+            int mcount = Integer.parseInt(mcount1.getText());
+
+            MainControl mc = new MainControl();
+            mc.addMed(mname, mdesc, mamount, mdesc, mcount);
+            show_user4();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error: "+e.getMessage());
+        }
+
+    }//GEN-LAST:event_jButton6MouseClicked
+
+    private void jButton6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6MouseEntered
+
+    private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
+        // TODO add your handling code here:
+        mname1.setText(null);
+        dform1.setText(null);
+        mdesc1.setText(null);
+        mamount1.setText(null);
+        mcount1.setText(null);
+    }//GEN-LAST:event_jButton7MouseClicked
+
+    private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
+        // TODO add your handling code here:
+
+        Connection conn = null;
+        int ii = medTable.getSelectedRow();
+        TableModel model =  medTable.getModel();
+
+        String medname = mname1.getText();
+        String meddform = dform1.getText();
+        String medamount = mamount1.getText();
+        String meddesc = mdesc1.getText();
+        String medcount = mcount1.getText();
+        String mid = model.getValueAt(ii, 0).toString();
+
+        System.out.println("Medicine ID: " + mid);
+        System.out.println("Medicine name: " + medname);
+        System.out.println("Dosage form: " + meddform);
+        System.out.println("Amount: " + medamount);
+        System.out.println("description: " + meddesc);
+        System.out.println("Item count: " + medcount);
+
+        ResultSet rs = null;
+        try{
+            String sql = "UPDATE `medicinelist` SET `medicine_name`=?,`dosageForm`=?,`amount`=?,`medicine_desc`=?,`remaining`=? WHERE medicine_id=" +mid ;
+            Class.forName("com.mysql.jdbc.Driver");
+            conn=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/icaredb?zeroDateTimeBehavior=exception","root","");
+            PreparedStatement pst = (PreparedStatement) conn.prepareStatement(sql);
+
+            pst.setString(1, medname);
+            pst.setString(2, meddform);
+            pst.setString(3, medamount);
+            pst.setString(4, meddesc);
+            pst.setString(5,  medcount);
+            int i = pst.executeUpdate();
+            //rs = pst.executeQuery();
+            System.out.println("Updated");
+            show_user4();
+            if(rs.next()){
+                JOptionPane.showMessageDialog(null, "Medicine updated.");
+            }else{
+                JOptionPane.showMessageDialog(null, "Not updated.");
+            }
+
+        }catch(Exception e){
+
+        }
+    }//GEN-LAST:event_jButton8MouseClicked
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void mname1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mname1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mname1ActionPerformed
+
+    private void medTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medTableMouseClicked
+        // TODO add your handling code here:
+        int i = medTable.getSelectedRow();
+        TableModel model =  medTable.getModel();
+        mname1.setText(model.getValueAt(i, 0).toString());
+        dform1.setText(model.getValueAt(i, 1).toString());
+        mamount1.setText(model.getValueAt(i, 2).toString());
+        mdesc1.setText(model.getValueAt(i, 3).toString());
+        mcount1.setText(model.getValueAt(i, 4).toString());
+    }//GEN-LAST:event_medTableMouseClicked
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(NurseModule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(NurseModule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(NurseModule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(NurseModule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new NurseModule().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField dform1;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButtonAdd;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTabbedPane jTabbedMeds;
+    private javax.swing.JTable jTablePatient;
+    private javax.swing.JTextField mamount1;
+    private javax.swing.JTextField mcount1;
+    private javax.swing.JTextArea mdesc1;
+    private javax.swing.JPanel medPane;
+    private javax.swing.JTable medTable;
+    private javax.swing.JTextField mname1;
+    // End of variables declaration//GEN-END:variables
+}
